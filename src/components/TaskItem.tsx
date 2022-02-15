@@ -3,8 +3,8 @@ import { Fragment } from "react"
 import { Image, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
 import Icon from 'react-native-vector-icons/Feather';
 import trashIcon from '../assets/icons/trash/trash.png'
-import closeIcon from '../assets/icons/x-icon.svg'
-import editIcon from '../assets/icons/edit.svg'
+import closeIcon from '../assets/icons/x-icon.png'
+import editIcon from '../assets/icons/edit.png'
 
 export interface Task {
     id: number;
@@ -31,7 +31,7 @@ export function TaskItem({ index, item, toggleTaskDone, removeTask, editTask }: 
     const textInputRef = useRef<TextInput>(null)
 
     useEffect(() => {
-        if (taskTitleEditing) {
+        if (isEditing) {
             textInputRef?.current?.focus()
         } else {
             textInputRef?.current?.blur();
@@ -43,7 +43,7 @@ export function TaskItem({ index, item, toggleTaskDone, removeTask, editTask }: 
     }
 
     function handleCancelEditing() {
-        setIsEditing(true)
+        setIsEditing(false)
         setTaksTitleEditing(item.title)
     }
 
@@ -83,6 +83,7 @@ export function TaskItem({ index, item, toggleTaskDone, removeTask, editTask }: 
                         onChangeText={setTaksTitleEditing}
                         editable={isEditing}
                         onSubmitEditing={handleSubmitEditing}
+                        onBlur={handleCancelEditing}
                         style={item.done ? styles.taskTextDone : styles.taskText}
                         ref={textInputRef}
                     />
@@ -90,34 +91,33 @@ export function TaskItem({ index, item, toggleTaskDone, removeTask, editTask }: 
             </View>
 
 
-            <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {isEditing ? (
                     <TouchableOpacity
-                        style={{ paddingHorizontal: 24 }}
+                        style={{ paddingHorizontal: 16 }}
                         onPress={handleCancelEditing}
                     >
                         <Image source={closeIcon} />
                     </TouchableOpacity>
                 ) : (
                     <TouchableOpacity
-                        style={{ paddingHorizontal: 24 }}
+                        style={{ paddingHorizontal: 10 }}
                         onPress={handleStartEditing}
                     >
                         <Image source={editIcon} />
                     </TouchableOpacity>
                 )}
+
+                <View style={{ width: 1, height: 24, backgroundColor: 'rgba(196, 196, 196, 0.24)' }} />
+
+                <TouchableOpacity
+                    style={{ paddingHorizontal: 10 }}
+                    onPress={() => removeTask(item.id)}
+                    disabled={isEditing}
+                >
+                    <Image style={{ opacity: isEditing ? 0.4 : 1 }} source={trashIcon} />
+                </TouchableOpacity>
             </View>
-
-            <View style={{ width: 1, height: 24, backgroundColor: 'rgba(196, 196, 196, 0.24)' }} />
-
-            <TouchableOpacity
-                style={{ paddingHorizontal: 24 }}
-                onPress={() => removeTask(item.id)}
-                disabled={isEditing}
-            >
-                <Image style={{ opacity: isEditing ? 0.2 : 1 }} source={trashIcon} />
-            </TouchableOpacity>
-
         </Fragment>
     )
 }

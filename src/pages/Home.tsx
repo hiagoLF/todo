@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, KeyboardAvoidingViewBase, KeyboardAvoidingViewComponent, StyleSheet, View } from 'react-native';
 
 import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
@@ -59,7 +59,7 @@ export function Home() {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <Header tasksCounter={tasks.length} />
 
       <TodoInput addTask={handleAddTask} />
@@ -70,7 +70,7 @@ export function Home() {
         removeTask={handleRemoveTask}
         editTask={handleEditTask}
       />
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 

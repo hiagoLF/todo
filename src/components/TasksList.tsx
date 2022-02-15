@@ -27,6 +27,7 @@ export function TasksList({ tasks, toggleTaskDone, removeTask, editTask }: Tasks
       keyExtractor={item => String(item.id)}
       contentContainerStyle={{ paddingBottom: 24 }}
       showsVerticalScrollIndicator={false}
+      removeClippedSubviews={false}
       renderItem={({ item, index }) => {
         return (
           <ItemWrapper index={index}>
